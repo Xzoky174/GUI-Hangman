@@ -73,7 +73,7 @@ public class HangmanController {
         }
 
         if (!(count == 0) && (!didGuess || !didWin)){
-            currentStep.setImage(new Image("file:src/com/company/Step " + (count) + ".png"));
+            currentStep.setImage(new Image("file:images/Step " + (count) + ".png"));
         }
 
         if (count == 2){
