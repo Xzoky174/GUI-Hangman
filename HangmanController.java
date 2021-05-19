@@ -1,3 +1,5 @@
+package com.company;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -72,27 +74,30 @@ public class HangmanController {
             count++;
         }
 
-        if (!(count == 0) && (!didGuess || !didWin)){
-            currentStep.setImage(new Image("file:images/Step " + (count) + ".png"));
+        if (!(count == 0) && (!didWin)){
+            currentStep.setImage(new Image("file:src/com/company/images/Step " + (count) + ".png"));
         }
 
-        if (count == 2){
-            hint.setText("Hint 1: First Letter is " + wordPicked.get(0));
-            indexGuessed.add(0);
-        } else if (count == 4 && wordPicked.size() > 3){
-            if (wordPicked.size() % 2 != 0){
-                int midIndex = (int) Math.floor(wordPicked.size() / 2); // Get index of middle word
-                hint.setText("Hint 2: Middle letter is " + wordPicked.get(midIndex));
-                indexGuessed.add(midIndex);
+        if ((count == 3 || count == 6 || count == 9) && (!didGuess && !(wordPicked.size() < 4))) {
+            int guessToShow = 0;
+            while (indexGuessed.contains(guessToShow)) {
+                guessToShow++;
             }
-            else {
-                hint.setText("Hint 2: Second Letter is " + wordPicked.get(1));
+            if (guessToShow == 0) {
+                hint.setText("Hint: 1st letter is " + wordPicked.get(0));
+                indexGuessed.add(0);
+            } else if (guessToShow == 1) {
+                hint.setText("Hint: 2nd letter is " + wordPicked.get(1));
                 indexGuessed.add(1);
+            } else if (guessToShow == 2) {
+                hint.setText("Hint: 3rd letter is " + wordPicked.get(2));
+                indexGuessed.add(2);
+            } else {
+                hint.setText("Hint: " + (guessToShow + 1) + "th letter is " + wordPicked.get(0));
+                indexGuessed.add(guessToShow);
             }
-        } else if (count == 6 && wordPicked.size() > 3){
-            hint.setText("Hint 3 (Final Hint): Last Letter is " + wordPicked.get(wordPicked.size() - 1));
-            indexGuessed.add(wordPicked.size() - 1);
-        } else if (count == 9){
+        }
+        if (count == 9){
             String strWord = "";
             for (char c : wordPicked){
                 strWord += String.valueOf(c);
@@ -128,7 +133,7 @@ public class HangmanController {
     }
 
     public void initialize() throws IOException {
-        Scanner out = new Scanner(Paths.get("C:\\Users\\Ali Shariq\\Documents\\Programming\\Java\\GUI Hangman\\src\\com\\company\\words.txt"));
+        Scanner out = new Scanner(Paths.get("C:\\Users\\Dell\\IdeaProjects\\Hangman\\src\\com\\company\\words.txt"));
         SecureRandom randNum = new SecureRandom();
 
         for (int i = 0; i < randNum.nextInt(200) + 1; i++){
@@ -141,6 +146,8 @@ public class HangmanController {
             wordPicked.add(c);
         }
 
+        System.out.println(wordPicked);
+
         String under = "";
         for (int i = 0; i < wordPicked.size(); i++){
             under += "_";
@@ -151,5 +158,7 @@ public class HangmanController {
         guess.textProperty().addListener((ov, oldVal, newVal) -> {
             enter.setDisable(newVal.isBlank());
         });
+
+        enter.setDefaultButton(true);
     }
 }
