@@ -133,7 +133,7 @@ public class HangmanController {
     }
 
     public void initialize() throws IOException {
-        Scanner out = new Scanner(Paths.get("C:\\Users\\Dell\\IdeaProjects\\Hangman\\src\\com\\company\\words.txt"));
+        Scanner out = new Scanner(Paths.get("words.txt")); // Add absolute path here
         SecureRandom randNum = new SecureRandom();
 
         for (int i = 0; i < randNum.nextInt(200) + 1; i++){
